@@ -1,4 +1,4 @@
-import { Price, Token } from '@uniswap/sdk-core'
+import { Price, Token } from '@violetprotocol/mauve-sdk-core'
 import { tickToPrice } from './index'
 import { priceToClosestTick } from './priceTickConversions'
 
@@ -9,7 +9,7 @@ describe('priceTickConversions', () => {
   function token({
     sortOrder,
     decimals = 18,
-    chainId = 1
+    chainId = 1,
   }: {
     sortOrder: number
     decimals?: number
