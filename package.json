@@ -1,19 +1,16 @@
 {
-  "name": "@uniswap/v3-sdk",
+  "name": "@violetprotocol/mauve-v3-sdk",
   "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
-  "version": "3.9.0",
-  "description": "⚒️ An SDK for building applications on top of Uniswap V3",
+  "version": "4.0.0",
+  "description": "⚒️ An SDK for building applications on top of Mauve",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist"
   ],
-  "repository": "https://github.com/Uniswap/uniswap-v3-sdk.git",
+  "repository": "https://github.com/violetprotocol/mauve-v3-sdk.git",
   "keywords": [
-    "uniswap",
+    "mauve",
     "ethereum"
   ],
   "module": "dist/v3-sdk.esm.js",
@@ -26,10 +23,10 @@
   "dependencies": {
     "@ethersproject/abi": "^5.0.12",
     "@ethersproject/solidity": "^5.0.9",
-    "@uniswap/sdk-core": "^3.0.1",
     "@uniswap/swap-router-contracts": "^1.2.1",
     "@uniswap/v3-periphery": "^1.1.1",
     "@uniswap/v3-staker": "1.0.0",
+    "@violetprotocol/mauve-sdk-core": "3.2.0",
     "tiny-invariant": "^1.1.0",
     "tiny-warning": "^1.0.3"
   },

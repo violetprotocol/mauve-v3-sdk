@@ -1,4 +1,4 @@
-import { MaxUint256 } from '@uniswap/sdk-core'
+import { MaxUint256 } from '@violetprotocol/mauve-sdk-core'
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { ZERO } from '../internalConstants'
@@ -6,7 +6,7 @@ import { ZERO } from '../internalConstants'
 const TWO = JSBI.BigInt(2)
 const POWERS_OF_2 = [128, 64, 32, 16, 8, 4, 2, 1].map((pow: number): [number, JSBI] => [
   pow,
-  JSBI.exponentiate(TWO, JSBI.BigInt(pow))
+  JSBI.exponentiate(TWO, JSBI.BigInt(pow)),
 ])
 
 export function mostSignificantBit(x: JSBI): number {

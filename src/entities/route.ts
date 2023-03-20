@@ -1,6 +1,6 @@
 import invariant from 'tiny-invariant'
 
-import { Currency, Price, Token } from '@uniswap/sdk-core'
+import { Currency, Price, Token } from '@violetprotocol/mauve-sdk-core'
 import { Pool } from './pool'
 
 /**

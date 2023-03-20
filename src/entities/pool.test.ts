@@ -1,4 +1,4 @@
-import { Token, CurrencyAmount, WETH9 } from '@uniswap/sdk-core'
+import { Token, CurrencyAmount, WETH9 } from '@violetprotocol/mauve-sdk-core'
 import { FeeAmount, TICK_SPACINGS } from '../constants'
 import { nearestUsableTick } from '../utils/nearestUsableTick'
 import { TickMath } from '../utils/tickMath'
@@ -178,13 +178,13 @@ describe('Pool', () => {
         {
           index: nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[FeeAmount.LOW]),
           liquidityNet: ONE_ETHER,
-          liquidityGross: ONE_ETHER
+          liquidityGross: ONE_ETHER,
         },
         {
           index: nearestUsableTick(TickMath.MAX_TICK, TICK_SPACINGS[FeeAmount.LOW]),
           liquidityNet: JSBI.multiply(ONE_ETHER, NEGATIVE_ONE),
-          liquidityGross: ONE_ETHER
-        }
+          liquidityGross: ONE_ETHER,
+        },
       ])
     })
 
@@ -230,13 +230,13 @@ describe('Pool', () => {
         {
           index: nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[FeeAmount.LOW]),
           liquidityNet: ONE_ETHER,
-          liquidityGross: ONE_ETHER
+          liquidityGross: ONE_ETHER,
         },
         {
           index: nearestUsableTick(TickMath.MAX_TICK, TICK_SPACINGS[FeeAmount.LOW]),
           liquidityNet: JSBI.multiply(ONE_ETHER, NEGATIVE_ONE),
-          liquidityGross: ONE_ETHER
-        }
+          liquidityGross: ONE_ETHER,
+        },
       ])
     })
 
