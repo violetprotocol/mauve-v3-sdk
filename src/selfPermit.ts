@@ -1,6 +1,6 @@
 import { BigintIsh, Token } from '@violetprotocol/mauve-sdk-core'
 import { Interface } from '@ethersproject/abi'
-import ISelfPermit from '@uniswap/v3-periphery/artifacts/contracts/interfaces/ISelfPermit.sol/ISelfPermit.json'
+import ISelfPermit from '@violetprotocol/mauve-v3-periphery/artifacts/contracts/interfaces/ISelfPermit.sol/ISelfPermit.json'
 import { toHex } from './utils'
 
 export interface StandardPermitArguments {
@@ -41,7 +41,7 @@ export abstract class SelfPermit {
           toHex(options.expiry),
           options.v,
           options.r,
-          options.s,
+          options.s
         ])
       : SelfPermit.INTERFACE.encodeFunctionData('selfPermit', [
           token.address,
@@ -49,7 +49,7 @@ export abstract class SelfPermit {
           toHex(options.deadline),
           options.v,
           options.r,
-          options.s,
+          options.s
         ])
   }
 }

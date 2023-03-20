@@ -5,7 +5,7 @@ import {
   CurrencyAmount,
   Percent,
   TradeType,
-  validateAndParseAddress,
+  validateAndParseAddress
 } from '@violetprotocol/mauve-sdk-core'
 import invariant from 'tiny-invariant'
 import { Trade } from './entities/trade'
@@ -13,7 +13,7 @@ import { ADDRESS_ZERO } from './constants'
 import { PermitOptions, SelfPermit } from './selfPermit'
 import { encodeRouteToPath } from './utils'
 import { MethodParameters, toHex } from './utils/calldata'
-import ISwapRouter from '@uniswap/v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json'
+import ISwapRouter from '@violetprotocol/mauve-v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json'
 import { Multicall } from './multicall'
 import { FeeOptions, Payments } from './payments'
 
