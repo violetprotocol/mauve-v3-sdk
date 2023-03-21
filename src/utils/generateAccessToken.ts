@@ -3,7 +3,7 @@ import { messages, utils } from '@violetprotocol/ethereum-access-token-helpers'
 import { splitSignature } from '@ethersproject/bytes'
 import { Interface } from '@ethersproject/abi'
 
-export const generateAccessTokenForMulticall = async (
+export const generateAccessToken = async (
   signer: Wallet,
   domain: messages.Domain,
   caller: string,
