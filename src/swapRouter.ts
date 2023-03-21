@@ -12,9 +12,8 @@ import { Trade } from './entities/trade'
 import { ADDRESS_ZERO } from './constants'
 import { PermitOptions, SelfPermit } from './selfPermit'
 import { encodeRouteToPath } from './utils'
-import { MethodParameters, toHex } from './utils/calldata'
+import { MulticallParameters, toHex } from './utils/calldata'
 import ISwapRouter from '@violetprotocol/mauve-v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json'
-import { Multicall } from './multicall'
 import { FeeOptions, Payments } from './payments'
 
 /**
@@ -71,7 +70,7 @@ export abstract class SwapRouter {
   public static swapCallParameters(
     trades: Trade<Currency, Currency, TradeType> | Trade<Currency, Currency, TradeType>[],
     options: SwapOptions
-  ): MethodParameters {
+  ): MulticallParameters {
     if (!Array.isArray(trades)) {
       trades = [trades]
     }
@@ -90,7 +89,7 @@ export abstract class SwapRouter {
       'TOKEN_OUT_DIFF'
     )
 
-    const calldatas: string[] = []
+    const calls: string[] = []
 
     const ZERO_IN: CurrencyAmount<Currency> = CurrencyAmount.fromRawAmount(trades[0].inputAmount.currency, 0)
     const ZERO_OUT: CurrencyAmount<Currency> = CurrencyAmount.fromRawAmount(trades[0].outputAmount.currency, 0)
@@ -114,7 +113,7 @@ export abstract class SwapRouter {
     // encode permit if necessary
     if (options.inputTokenPermit) {
       invariant(sampleTrade.inputAmount.currency.isToken, 'NON_TOKEN_PERMIT')
-      calldatas.push(SelfPermit.encodePermit(sampleTrade.inputAmount.currency, options.inputTokenPermit))
+      calls.push(SelfPermit.encodePermit(sampleTrade.inputAmount.currency, options.inputTokenPermit))
     }
 
     const recipient: string = validateAndParseAddress(options.recipient)
@@ -141,7 +140,7 @@ export abstract class SwapRouter {
               sqrtPriceLimitX96: toHex(options.sqrtPriceLimitX96 ?? 0)
             }
 
-            calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactInputSingle', [exactInputSingleParams]))
+            calls.push(SwapRouter.INTERFACE.encodeFunctionData('exactInputSingle', [exactInputSingleParams]))
           } else {
             const exactOutputSingleParams = {
               tokenIn: route.tokenPath[0].address,
@@ -154,7 +153,7 @@ export abstract class SwapRouter {
               sqrtPriceLimitX96: toHex(options.sqrtPriceLimitX96 ?? 0)
             }
 
-            calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactOutputSingle', [exactOutputSingleParams]))
+            calls.push(SwapRouter.INTERFACE.encodeFunctionData('exactOutputSingle', [exactOutputSingleParams]))
           }
         } else {
           invariant(options.sqrtPriceLimitX96 === undefined, 'MULTIHOP_PRICE_LIMIT')
@@ -170,7 +169,7 @@ export abstract class SwapRouter {
               amountOutMinimum: amountOut
             }
 
-            calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactInput', [exactInputParams]))
+            calls.push(SwapRouter.INTERFACE.encodeFunctionData('exactInput', [exactInputParams]))
           } else {
             const exactOutputParams = {
               path,
@@ -180,7 +179,7 @@ export abstract class SwapRouter {
               amountInMaximum: amountIn
             }
 
-            calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactOutput', [exactOutputParams]))
+            calls.push(SwapRouter.INTERFACE.encodeFunctionData('exactOutput', [exactOutputParams]))
           }
         }
       }
@@ -190,9 +189,9 @@ export abstract class SwapRouter {
     if (routerMustCustody) {
       if (!!options.fee) {
         if (outputIsNative) {
-          calldatas.push(Payments.encodeUnwrapWETH9(totalAmountOut.quotient, recipient, options.fee))
+          calls.push(Payments.encodeUnwrapWETH9(totalAmountOut.quotient, recipient, options.fee))
         } else {
-          calldatas.push(
+          calls.push(
             Payments.encodeSweepToken(
               sampleTrade.outputAmount.currency.wrapped,
               totalAmountOut.quotient,
@@ -202,17 +201,17 @@ export abstract class SwapRouter {
           )
         }
       } else {
-        calldatas.push(Payments.encodeUnwrapWETH9(totalAmountOut.quotient, recipient))
+        calls.push(Payments.encodeUnwrapWETH9(totalAmountOut.quotient, recipient))
       }
     }
 
     // refund
     if (mustRefund) {
-      calldatas.push(Payments.encodeRefundETH())
+      calls.push(Payments.encodeRefundETH())
     }
 
     return {
-      calldata: Multicall.encodeMulticall(calldatas),
+      calls,
       value: toHex(totalValue.quotient)
     }
   }
