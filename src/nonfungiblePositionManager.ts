@@ -11,13 +11,11 @@ import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { Position } from './entities/position'
 import { ONE, ZERO } from './internalConstants'
-import { MethodParameters, toHex } from './utils/calldata'
+import { MethodParameters, MulticallParameters, toHex } from './utils/calldata'
 import { Interface } from '@ethersproject/abi'
 import INonfungiblePositionManager from '@violetprotocol/mauve-v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
 import { PermitOptions, SelfPermit } from './selfPermit'
 import { ADDRESS_ZERO } from './constants'
-import { Pool } from './entities'
-import { Multicall } from './multicall'
 import { Payments } from './payments'
 
 const MaxUint128 = toHex(JSBI.subtract(JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(128)), JSBI.BigInt(1)))
@@ -180,23 +178,7 @@ export abstract class NonfungiblePositionManager {
    */
   private constructor() {}
 
-  private static encodeCreate(pool: Pool): string {
-    return NonfungiblePositionManager.INTERFACE.encodeFunctionData('createAndInitializePoolIfNecessary', [
-      pool.token0.address,
-      pool.token1.address,
-      pool.fee,
-      toHex(pool.sqrtRatioX96)
-    ])
-  }
-
-  public static createCallParameters(pool: Pool): MethodParameters {
-    return {
-      calldata: this.encodeCreate(pool),
-      value: toHex(0)
-    }
-  }
-
-  public static addCallParameters(position: Position, options: AddLiquidityOptions): MethodParameters {
+  public static addCallParameters(position: Position, options: AddLiquidityOptions): MulticallParameters {
     invariant(JSBI.greaterThan(position.liquidity, ZERO), 'ZERO_LIQUIDITY')
 
     const calldatas: string[] = []
@@ -210,11 +192,6 @@ export abstract class NonfungiblePositionManager {
     const amount1Min = toHex(minimumAmounts.amount1)
 
     const deadline = toHex(options.deadline)
-
-    // create pool if needed
-    if (isMint(options) && options.createPool) {
-      calldatas.push(this.encodeCreate(position.pool))
-    }
 
     // permits if necessary
     if (options.token0Permit) {
@@ -278,7 +255,7 @@ export abstract class NonfungiblePositionManager {
     }
 
     return {
-      calldata: Multicall.encodeMulticall(calldatas),
+      calls: calldatas,
       value
     }
   }
@@ -323,11 +300,11 @@ export abstract class NonfungiblePositionManager {
     return calldatas
   }
 
-  public static collectCallParameters(options: CollectOptions): MethodParameters {
-    const calldatas: string[] = NonfungiblePositionManager.encodeCollect(options)
+  public static collectCallParameters(options: CollectOptions): MulticallParameters {
+    const calls: string[] = NonfungiblePositionManager.encodeCollect(options)
 
     return {
-      calldata: Multicall.encodeMulticall(calldatas),
+      calls,
       value: toHex(0)
     }
   }
@@ -338,8 +315,8 @@ export abstract class NonfungiblePositionManager {
    * @param options Additional information necessary for generating the calldata
    * @returns The call parameters
    */
-  public static removeCallParameters(position: Position, options: RemoveLiquidityOptions): MethodParameters {
-    const calldatas: string[] = []
+  public static removeCallParameters(position: Position, options: RemoveLiquidityOptions): MulticallParameters {
+    const calls: string[] = []
 
     const deadline = toHex(options.deadline)
     const tokenId = toHex(options.tokenId)
@@ -359,7 +336,7 @@ export abstract class NonfungiblePositionManager {
     )
 
     if (options.permit) {
-      calldatas.push(
+      calls.push(
         NonfungiblePositionManager.INTERFACE.encodeFunctionData('permit', [
           validateAndParseAddress(options.permit.spender),
           tokenId,
@@ -372,7 +349,7 @@ export abstract class NonfungiblePositionManager {
     }
 
     // remove liquidity
-    calldatas.push(
+    calls.push(
       NonfungiblePositionManager.INTERFACE.encodeFunctionData('decreaseLiquidity', [
         {
           tokenId,
@@ -385,7 +362,7 @@ export abstract class NonfungiblePositionManager {
     )
 
     const { expectedCurrencyOwed0, expectedCurrencyOwed1, ...rest } = options.collectOptions
-    calldatas.push(
+    calls.push(
       ...NonfungiblePositionManager.encodeCollect({
         tokenId: toHex(options.tokenId),
         // add the underlying value to the expected currency already owed
@@ -401,14 +378,14 @@ export abstract class NonfungiblePositionManager {
 
     if (options.liquidityPercentage.equalTo(ONE)) {
       if (options.burnToken) {
-        calldatas.push(NonfungiblePositionManager.INTERFACE.encodeFunctionData('burn', [tokenId]))
+        calls.push(NonfungiblePositionManager.INTERFACE.encodeFunctionData('burn', [tokenId]))
       }
     } else {
       invariant(options.burnToken !== true, 'CANNOT_BURN')
     }
 
     return {
-      calldata: Multicall.encodeMulticall(calldatas),
+      calls,
       value: toHex(0)
     }
   }
