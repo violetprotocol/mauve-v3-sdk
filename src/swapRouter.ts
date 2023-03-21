@@ -13,7 +13,7 @@ import { ADDRESS_ZERO } from './constants'
 import { PermitOptions, SelfPermit } from './selfPermit'
 import { encodeRouteToPath } from './utils'
 import { MulticallParameters, toHex } from './utils/calldata'
-import ISwapRouter from '@violetprotocol/mauve-v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json'
+import ISwapRouter from '@violetprotocol/mauve-swap-router-contracts/artifacts/contracts/SwapRouter02.sol/SwapRouter02.json'
 import { FeeOptions, Payments } from './payments'
 
 /**
