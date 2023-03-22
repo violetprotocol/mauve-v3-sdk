@@ -16,6 +16,34 @@ export interface MethodParameters {
 }
 
 /**
+ * Generated method parameters for executing a call.
+ */
+export interface MulticallParameters {
+  /**
+   * The hex encoded array of calldatas to perform in the multicall
+   */
+  calls: string[]
+  /**
+   * The amount of ether (wei) to send in hex.
+   */
+  value: string
+}
+
+/**
+ * Generated method parameters for EAT signing
+ */
+export interface PresignEATFunctionCall {
+  /**
+   * The hex encoded bytes4 function signature for the function being called
+   */
+  functionSignature: string
+  /**
+   * The hex encoded function parameters, packed according to abi with EAT parameters stripped
+   */
+  parameters: string
+}
+
+/**
  * Converts a big int to a hex string
  * @param bigintIsh
  * @returns The hex encoded calldata
