@@ -191,7 +191,6 @@ export abstract class SwapRouter {
         if (outputIsNative) {
           calls.push(Payments.encodeUnwrapWETH9(totalAmountOut.quotient, recipient, options.fee))
         } else {
-          console.log('weep')
           calls.push(
             Payments.encodeSweepToken(
               sampleTrade.outputAmount.currency.wrapped,
