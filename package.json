@@ -21,19 +21,18 @@
     "prepublishOnly": "tsdx build"
   },
   "dependencies": {
-    "@ethersproject/abi": "^5.0.12",
     "@ethersproject/solidity": "^5.0.9",
     "@violetprotocol/mauve-sdk-core": "3.2.0",
     "@violetprotocol/mauve-swap-router-contracts": "1.5.0",
     "@violetprotocol/mauve-v3-periphery": "1.8.0",
-    "ethers": "^6.1.0",
+    "ethers": "^5.7.2",
     "tiny-invariant": "^1.1.0",
     "tiny-warning": "^1.0.3"
   },
   "devDependencies": {
     "@types/jest": "^24.0.25",
     "@violetprotocol/ethereum-access-token-helpers": "^0.2.0",
-    "@violetprotocol/mauve-v3-core": "1.2.1",
+    "@violetprotocol/mauve-v3-core": "1.2.2",
     "tsdx": "^0.14.1"
   },
   "engines": {
