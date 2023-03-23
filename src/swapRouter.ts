@@ -134,7 +134,7 @@ export abstract class SwapRouter {
               tokenOut: route.tokenPath[1].address,
               fee: route.pools[0].fee,
               recipient: routerMustCustody ? ADDRESS_ZERO : recipient,
-              deadline,
+              deadline, // not used
               amountIn,
               amountOutMinimum: amountOut,
               sqrtPriceLimitX96: toHex(options.sqrtPriceLimitX96 ?? 0)
@@ -147,7 +147,7 @@ export abstract class SwapRouter {
               tokenOut: route.tokenPath[1].address,
               fee: route.pools[0].fee,
               recipient: routerMustCustody ? ADDRESS_ZERO : recipient,
-              deadline,
+              deadline, // not used
               amountOut,
               amountInMaximum: amountIn,
               sqrtPriceLimitX96: toHex(options.sqrtPriceLimitX96 ?? 0)
@@ -164,7 +164,7 @@ export abstract class SwapRouter {
             const exactInputParams = {
               path,
               recipient: routerMustCustody ? ADDRESS_ZERO : recipient,
-              deadline,
+              deadline, // not used
               amountIn,
               amountOutMinimum: amountOut
             }
@@ -174,7 +174,7 @@ export abstract class SwapRouter {
             const exactOutputParams = {
               path,
               recipient: routerMustCustody ? ADDRESS_ZERO : recipient,
-              deadline,
+              deadline, // not used
               amountOut,
               amountInMaximum: amountIn
             }
@@ -191,6 +191,7 @@ export abstract class SwapRouter {
         if (outputIsNative) {
           calls.push(Payments.encodeUnwrapWETH9(totalAmountOut.quotient, recipient, options.fee))
         } else {
+          console.log('weep')
           calls.push(
             Payments.encodeSweepToken(
               sampleTrade.outputAmount.currency.wrapped,
