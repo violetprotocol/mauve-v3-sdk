@@ -3,6 +3,7 @@ export * from './utils'
 
 export * from './constants'
 export * from './multicall'
+export * from './EATmulticall'
 export * from './nonfungiblePositionManager'
 export * from './payments'
 export * from './quoter'
