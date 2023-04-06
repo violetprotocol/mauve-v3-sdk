@@ -32,7 +32,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.25",
     "@violetprotocol/ethereum-access-token-helpers": "^0.2.0",
-    "@violetprotocol/mauve-v3-core": "1.2.2",
+    "@violetprotocol/mauve-core": "1.2.3",
     "tsdx": "^0.14.1"
   },
   "engines": {
