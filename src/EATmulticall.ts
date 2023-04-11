@@ -1,5 +1,5 @@
 import { utils } from '@violetprotocol/ethereum-access-token-helpers'
-import IEATMulticall from '@violetprotocol/mauve-v3-periphery/artifacts/contracts/interfaces/IEATMulticall.sol/IEATMulticall.json'
+import IEATMulticall from '@violetprotocol/mauve-periphery/artifacts/contracts/interfaces/IEATMulticall.sol/IEATMulticall.json'
 import { Interface } from 'ethers/lib/utils'
 import { PresignEATFunctionCall } from './utils'
 

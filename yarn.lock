@@ -1463,6 +1463,11 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
+"@openzeppelin/contracts-upgradeable@^4.8.1":
+  version "4.8.2"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.8.2.tgz#edef522bdbc46d478481391553bababdd2199e27"
+  integrity sha512-zIggnBwemUmmt9IS73qxi+tumALxCY4QEs3zLCII78k0Gfse2hAOdAkuAeLUzvWUpneMUfFE5sGHzEUSTvn4Ag==
+
 "@openzeppelin/contracts@3.4.2-solc-0.7":
   version "3.4.2-solc-0.7"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-3.4.2-solc-0.7.tgz#38f4dbab672631034076ccdf2f3201fab1726635"
@@ -1751,6 +1756,19 @@
   resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-core/-/mauve-core-1.2.3.tgz#61e00765959f7e690f471905418fad8f3a2cc61a"
   integrity sha512-iZjTNvQj/mvGJBdaAVwWfyjiqdI49NKL4H5Kq8SQFpJR/d9QivcfjQuh/3R8TNCgJqGsjRd6HucfcgVQICQqUw==
 
+"@violetprotocol/mauve-periphery@1.8.2":
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-periphery/-/mauve-periphery-1.8.2.tgz#4015ce27dd53ef1956181a4ccfa55981b9d3202b"
+  integrity sha512-0Lm651C1QTj3vQvX1z6wiXY0zPCUMo+QRjTBiMpfXZu9wL4Mroziol8mr3LWyxkZ1YxzWhaB/lxZoHHu0zCkTQ==
+  dependencies:
+    "@openzeppelin/contracts" "3.4.2-solc-0.7"
+    "@uniswap/lib" "^4.0.1-alpha"
+    "@violetprotocol/ethereum-access-token" "0.2.0-sol07"
+    "@violetprotocol/mauve-core" "1.2.3"
+    "@violetprotocol/violetid" "1.2.2"
+    base64-sol "1.0.1"
+    hardhat-watcher "^2.1.1"
+
 "@violetprotocol/mauve-sdk-core@3.2.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-sdk-core/-/mauve-sdk-core-3.2.0.tgz#847747bd0cdfe025049c8187194ae7ba81447850"
@@ -1792,6 +1810,13 @@
     "@violetprotocol/mauve-v3-core" "1.2.1"
     base64-sol "1.0.1"
     hardhat-watcher "^2.1.1"
+
+"@violetprotocol/violetid@1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/violetid/-/violetid-1.2.2.tgz#3d626a04c92e611cb07b9f4e5f61ec50995329b8"
+  integrity sha512-AKJi4KTmFwMekxFWfks2hW6JZyhgX4oF1oUpnHpTbdSBCuPTbqTAdSc7nnrJfzT+vY1i6i1kmwl2vc0+Ficknw==
+  dependencies:
+    "@openzeppelin/contracts-upgradeable" "^4.8.1"
 
 abab@^2.0.0:
   version "2.0.5"

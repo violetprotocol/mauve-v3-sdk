@@ -1,5 +1,5 @@
 import { Interface } from '@ethersproject/abi'
-import IMulticall from '@violetprotocol/mauve-v3-periphery/artifacts/contracts/interfaces/IMulticall.sol/IMulticall.json'
+import IMulticall from '@violetprotocol/mauve-periphery/artifacts/contracts/interfaces/IMulticall.sol/IMulticall.json'
 
 export abstract class Multicall {
   public static INTERFACE: Interface = new Interface(IMulticall.abi)
