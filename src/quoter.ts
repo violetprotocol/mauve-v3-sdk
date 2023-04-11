@@ -1,7 +1,7 @@
 import { Interface } from '@ethersproject/abi'
 import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { encodeRouteToPath, MethodParameters, toHex } from './utils'
-import IQuoter from '@violetprotocol/mauve-v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
+import IQuoter from '@violetprotocol/mauve-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
 import IQuoterV2 from '@violetprotocol/mauve-swap-router-contracts/artifacts/contracts/lens/QuoterV2.sol/QuoterV2.json'
 import { Route } from './entities'
 import invariant from 'tiny-invariant'

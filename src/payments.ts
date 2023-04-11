@@ -1,6 +1,6 @@
 import JSBI from 'jsbi'
 import { Interface } from '@ethersproject/abi'
-import IPeripheryPaymentsWithFee from '@violetprotocol/mauve-v3-periphery/artifacts/contracts/interfaces/IPeripheryPaymentsWithFee.sol/IPeripheryPaymentsWithFee.json'
+import IPeripheryPaymentsWithFee from '@violetprotocol/mauve-periphery/artifacts/contracts/interfaces/IPeripheryPaymentsWithFee.sol/IPeripheryPaymentsWithFee.json'
 import { Percent, Token, validateAndParseAddress } from '@violetprotocol/mauve-sdk-core'
 import { toHex } from './utils/calldata'
 
