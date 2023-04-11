@@ -11,10 +11,10 @@ describe('#computePoolAddress', () => {
       factoryAddress,
       fee: FeeAmount.LOW,
       tokenA,
-      tokenB,
+      tokenB
     })
 
-    expect(result).toEqual('0x90B1b09A9715CaDbFD9331b3A7652B24BfBEfD32')
+    expect(result).toEqual('0x146ff0BC968c632eee7bb3C66e7b4492A887a2F1')
   })
 
   it('should correctly compute the pool address', () => {
@@ -26,7 +26,7 @@ describe('#computePoolAddress', () => {
       factoryAddress,
       fee: FeeAmount.LOW,
       tokenA,
-      tokenB,
+      tokenB
     })
 
     tokenA = DAI
@@ -36,7 +36,7 @@ describe('#computePoolAddress', () => {
       factoryAddress,
       fee: FeeAmount.LOW,
       tokenA,
-      tokenB,
+      tokenB
     })
 
     expect(resultA).toEqual(resultB)
