@@ -11,12 +11,13 @@ import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { Position } from './entities/position'
 import { ONE, ZERO } from './internalConstants'
-import { MethodParameters, MulticallParameters, toHex } from './utils/calldata'
+import { MethodParameters, MulticallParameters, PresignEATFunctionCall, toHex } from './utils/calldata'
 import { Interface } from '@ethersproject/abi'
 import INonfungiblePositionManager from '@violetprotocol/mauve-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
 import { PermitOptions, SelfPermit } from './selfPermit'
 import { ADDRESS_ZERO } from './constants'
 import { Payments } from './payments'
+import { EATMulticall } from './EATmulticall'
 
 const MaxUint128 = toHex(JSBI.subtract(JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(128)), JSBI.BigInt(1)))
 
@@ -97,7 +98,7 @@ export interface SafeTransferOptions {
 
 // type guard
 function isMint(options: AddLiquidityOptions): options is MintOptions {
-  return Object.keys(options).some(k => k === 'recipient')
+  return Object.keys(options).some((k) => k === 'recipient')
 }
 
 export interface CollectOptions {
@@ -178,7 +179,10 @@ export abstract class NonfungiblePositionManager {
    */
   private constructor() {}
 
-  public static addCallParameters(position: Position, options: AddLiquidityOptions): MulticallParameters {
+  public static addCallParameters(
+    position: Position,
+    options: AddLiquidityOptions
+  ): MulticallParameters & PresignEATFunctionCall {
     invariant(JSBI.greaterThan(position.liquidity, ZERO), 'ZERO_LIQUIDITY')
 
     const calldatas: string[] = []
@@ -218,8 +222,8 @@ export abstract class NonfungiblePositionManager {
             amount0Min,
             amount1Min,
             recipient,
-            deadline
-          }
+            deadline,
+          },
         ])
       )
     } else {
@@ -232,8 +236,8 @@ export abstract class NonfungiblePositionManager {
             amount1Desired: toHex(amount1Desired),
             amount0Min,
             amount1Min,
-            deadline
-          }
+            deadline,
+          },
         ])
       )
     }
@@ -254,9 +258,12 @@ export abstract class NonfungiblePositionManager {
       value = toHex(wrappedValue)
     }
 
+    const preSignMulticall = EATMulticall.encodePresignMulticall(calldatas)
+
     return {
+      ...preSignMulticall,
       calls: calldatas,
-      value
+      value,
     }
   }
 
@@ -277,8 +284,8 @@ export abstract class NonfungiblePositionManager {
           tokenId,
           recipient: involvesETH ? ADDRESS_ZERO : recipient,
           amount0Max: MaxUint128,
-          amount1Max: MaxUint128
-        }
+          amount1Max: MaxUint128,
+        },
       ])
     )
 
@@ -300,12 +307,15 @@ export abstract class NonfungiblePositionManager {
     return calldatas
   }
 
-  public static collectCallParameters(options: CollectOptions): MulticallParameters {
+  public static collectCallParameters(options: CollectOptions): MulticallParameters & PresignEATFunctionCall {
     const calls: string[] = NonfungiblePositionManager.encodeCollect(options)
 
+    const preSignMulticall = EATMulticall.encodePresignMulticall(calls)
+
     return {
+      ...preSignMulticall,
       calls,
-      value: toHex(0)
+      value: toHex(0),
     }
   }
 
@@ -315,7 +325,10 @@ export abstract class NonfungiblePositionManager {
    * @param options Additional information necessary for generating the calldata
    * @returns The call parameters
    */
-  public static removeCallParameters(position: Position, options: RemoveLiquidityOptions): MulticallParameters {
+  public static removeCallParameters(
+    position: Position,
+    options: RemoveLiquidityOptions
+  ): MulticallParameters & PresignEATFunctionCall {
     const calls: string[] = []
 
     const deadline = toHex(options.deadline)
@@ -326,7 +339,7 @@ export abstract class NonfungiblePositionManager {
       pool: position.pool,
       liquidity: options.liquidityPercentage.multiply(position.liquidity).quotient,
       tickLower: position.tickLower,
-      tickUpper: position.tickUpper
+      tickUpper: position.tickUpper,
     })
     invariant(JSBI.greaterThan(partialPosition.liquidity, ZERO), 'ZERO_LIQUIDITY')
 
@@ -343,7 +356,7 @@ export abstract class NonfungiblePositionManager {
           toHex(options.permit.deadline),
           options.permit.v,
           options.permit.r,
-          options.permit.s
+          options.permit.s,
         ])
       )
     }
@@ -356,8 +369,8 @@ export abstract class NonfungiblePositionManager {
           liquidity: toHex(partialPosition.liquidity),
           amount0Min: toHex(amount0Min),
           amount1Min: toHex(amount1Min),
-          deadline
-        }
+          deadline,
+        },
       ])
     )
 
@@ -372,7 +385,7 @@ export abstract class NonfungiblePositionManager {
         expectedCurrencyOwed1: expectedCurrencyOwed1.add(
           CurrencyAmount.fromRawAmount(expectedCurrencyOwed1.currency, amount1Min)
         ),
-        ...rest
+        ...rest,
       })
     )
 
@@ -384,9 +397,12 @@ export abstract class NonfungiblePositionManager {
       invariant(options.burnToken !== true, 'CANNOT_BURN')
     }
 
+    const preSignMulticall = EATMulticall.encodePresignMulticall(calls)
+
     return {
+      ...preSignMulticall,
       calls,
-      value: toHex(0)
+      value: toHex(0),
     }
   }
 
@@ -404,12 +420,12 @@ export abstract class NonfungiblePositionManager {
       calldata = NonfungiblePositionManager.INTERFACE.encodeFunctionData('safeTransferFrom(address,address,uint256)', [
         sender,
         recipient,
-        toHex(options.tokenId)
+        toHex(options.tokenId),
       ])
     }
     return {
       calldata: calldata,
-      value: toHex(0)
+      value: toHex(0),
     }
   }
 }
