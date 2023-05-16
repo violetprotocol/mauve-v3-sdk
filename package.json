@@ -1,7 +1,7 @@
 {
   "name": "@violetprotocol/mauve-v3-sdk",
   "license": "MIT",
-  "version": "4.2.3-alpha1",
+  "version": "4.2.2",
   "description": "⚒️ An SDK for building applications on top of Mauve",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
