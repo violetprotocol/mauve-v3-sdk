@@ -1,7 +1,7 @@
 {
   "name": "@violetprotocol/mauve-v3-sdk",
   "license": "MIT",
-  "version": "4.2.2",
+  "version": "4.2.3-alpha0",
   "description": "⚒️ An SDK for building applications on top of Mauve",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -34,6 +34,9 @@
     "@violetprotocol/ethereum-access-token-helpers": "^0.2.0",
     "@violetprotocol/mauve-core": "1.2.4",
     "tsdx": "^0.14.1"
+  },
+  "peerDependencies": {
+    "@violetprotocol/ethereum-access-token-helpers": "^0.2.0"
   },
   "engines": {
     "node": ">=10"
