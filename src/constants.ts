@@ -9,6 +9,7 @@ export const POOL_INIT_CODE_HASH = '0x35cf190007bfd8b78434816f3c1a816e2f40d11142
  */
 export enum FeeAmount {
   LOWEST = 100,
+  LOWER = 400,
   LOW = 500,
   MEDIUM = 3000,
   HIGH = 10000
@@ -19,6 +20,7 @@ export enum FeeAmount {
  */
 export const TICK_SPACINGS: { [amount in FeeAmount]: number } = {
   [FeeAmount.LOWEST]: 1,
+  [FeeAmount.LOWER]: 8,
   [FeeAmount.LOW]: 10,
   [FeeAmount.MEDIUM]: 60,
   [FeeAmount.HIGH]: 200
