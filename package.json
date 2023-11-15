@@ -1,7 +1,7 @@
 {
   "name": "@violetprotocol/mauve-v3-sdk",
   "license": "MIT",
-  "version": "4.2.4",
+  "version": "4.2.5",
   "description": "⚒️ An SDK for building applications on top of Mauve",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -22,10 +22,10 @@
   },
   "dependencies": {
     "@ethersproject/solidity": "^5.0.9",
-    "@violetprotocol/mauve-sdk-core": "3.2.0",
-    "@violetprotocol/mauve-swap-router-contracts": "1.5.4",
-    "@violetprotocol/mauve-periphery": "1.8.8",
     "@violetprotocol/ethereum-access-token-helpers": "^0.2.0",
+    "@violetprotocol/mauve-periphery": "1.8.8",
+    "@violetprotocol/mauve-sdk-core": "3.3.0",
+    "@violetprotocol/mauve-swap-router-contracts": "1.5.4",
     "ethers": "^5.7.2",
     "tiny-invariant": "^1.1.0",
     "tiny-warning": "^1.0.3"
